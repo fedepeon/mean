@@ -1,0 +1,36 @@
+<div class="" data-ng-controller="BannersController" ng-init="find()">
+
+  <button type="button" ng-click="addItem(row)" class="btn btn-sm btn-success">
+    <i class="glyphicon glyphicon-plus">
+    </i> Add random item
+  </button>
+
+  <table st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped">
+    <thead>
+    <tr>
+      <th st-sort="banner_name">banner name</th>
+      <th st-sort="banner_position">banner position</th>
+      <th st-sort="banner_expires">banner_expires</th>
+      <th st-sort="banner_image">banner_image</th>
+    </tr>
+    <tr>
+      <th colspan="5"><input st-search="" class="form-control" placeholder="global search ..." type="text"/></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="row in displayedCollection">
+      <td>{{row.banner_name}}</td>
+      <td>{{row.banner_position}}</td>
+      <td>{{row.banner_expires}}</td>
+      <td>{{row.banner_image}}</td>
+      <td>
+      <button type="button" ng-click="removeItem(row)" class="btn btn-sm btn-danger">
+        <i class="glyphicon glyphicon-remove-circle">
+        </i>
+      </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
