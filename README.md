@@ -11,16 +11,18 @@ MEAN is a framework for an easy starting point with [MongoDB](http://www.mongodb
 * *Node.js* - <a href="http://nodejs.org/download/">Download</a> and Install Node.js, nodeschool has free <a href=" http://nodeschool.io/#workshoppers">node tutorials</a> to get you started.
 
 ```bash
-$ sudo apt-get install python-software-properties python g++ make
-$ sudo add-apt-repository ppa:chris-lea/node.js
+$ curl -sL https://deb.nodesource.com/setup | sudo bash -
 $ sudo apt-get update
 $ sudo apt-get install nodejs
 ```
 
 * *Git* - Get git using a package manager or <a href="http://git-scm.com/downloads">download</a> it.
-* Grunt - Download and Install [Grunt](http://gruntjs.com).
+* Mean currently works with either grunt or gulp..
 ```
 $ npm install -g grunt-cli
+$ npm install -g gulp
+// and bower
+$ npm install -g bower 
 ```
 
 ## Installation
