@@ -1,8 +1,8 @@
 'use strict';
 
 /* jshint -W098 */
-angular.module('mean.banners').controller('BannersController', ['$scope', 'Global', 'Banners',
-function($scope, Global, Banners) {
+angular.module('mean.banners').controller('BannersCtrl', ['$scope', '$modal', '$log', 'Global', 'Banners',
+function($scope, $modal, $log, Global, Banners) {
 
   $scope.alerts = [
   { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
@@ -22,11 +22,6 @@ function($scope, Global, Banners) {
     name: 'banners'
   };
 
-  $scope.showModal = false;
-  $scope.toggleModal = function(){
-      $scope.showModal = !$scope.showModal;
-  };
-
   $scope.activeTab = {
     all: 'active'
   };
@@ -36,7 +31,7 @@ function($scope, Global, Banners) {
     $scope.activeTab[tab] = 'active';
   };
 
-  $scope.predicates = ['banner_name', 'banner_position'];
+  $scope.predicates = ['name', 'position'];
   $scope.selectedPredicate = $scope.predicates[0];
 
   $scope.all = function() {
@@ -65,16 +60,16 @@ function($scope, Global, Banners) {
   //add to the real data holder
   $scope.addItem = function addItem() {
 
-    var expires = formatDate(new Date());
+    var expires = new Date();
 
     var newBanner = new Banners({
-      banner_name: 'WX',
-      banner_position: 'Top',
-      banner_url: 'http://',
-      banner_image: 'img.jpg',
-      banner_active: true,
-      banner_expires: expires,
-      banner_deleted_at: null
+      name: 'WX',
+      position: 'Top',
+      url: 'http://',
+      image: 'img.jpg',
+      active: true,
+      expires: expires,
+      deleted_at: null
     });
 
     newBanner.$save();
@@ -83,6 +78,8 @@ function($scope, Global, Banners) {
     //$scope.displayedCollection = [].concat($scope.rowCollection);
 
   };
+
+
 
   //Delete an item (Send to recycle bin)
   $scope.deleteItem = function deleteItem(row) {
@@ -135,50 +132,84 @@ function($scope, Global, Banners) {
     return date.getFullYear()  + '-' + month + '-' + day;
   }
 
-}
-]);
 
+  $scope.editItem = function (item) {
 
-angular.module('mean.banners').controller('ModalDemoCtrl', function ($scope, $modal, $log) {
-
-  $scope.items = ['item1', 'item2', 'item3'];
-
-  $scope.open = function (size) {
+    //$scope.row = row;
 
     var modalInstance = $modal.open({
-      templateUrl: 'myModalContent.html',
-      controller: 'ModalInstanceCtrl',
-      size: size,
+      templateUrl: 'edit.html',
+      controller: 'EditModalCtrl',
+      size: 'lg',
       resolve: {
-        items: function () {
-          return $scope.items;
+        item: function () {
+          return item;
         }
       }
     });
 
-    modalInstance.result.then(function (selectedItem) {
-      $scope.selected = selectedItem;
+    modalInstance.result.then(function (item) {
+      console.log(item);
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
     });
-  };
-});
 
-// Please note that $modalInstance represents a modal window (instance) dependency.
-// It is not the same as the $modal service used above.
-
-angular.module('mean.banners').controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
-
-  $scope.items = items;
-  $scope.selected = {
-    item: $scope.items[0]
   };
 
-  $scope.ok = function () {
-    $modalInstance.close($scope.selected.item);
+
+}
+]);
+
+
+angular.module('mean.banners').controller('EditModalCtrl', ['$scope',  '$modalInstance', 'item', function ($scope,  $modalInstance, item) {
+
+    $scope.item = item;
+
+    $scope.dt = new Date();
+    console.log($scope.item);
+
+    // Disable weekend selection
+    $scope.disabled = function(date, mode) {
+      return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+    };
+
+
+    $scope.open = function($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+
+      $scope.opened = true;
+    };
+
+    $scope.dateOptions = {
+      formatYear: 'yy',
+      startingDay: 1
+    };
+
+    $scope.format = 'yyyy/MM/dd';
+
+/*---------------------------------------*/
+  $scope.submitted = false;
+  $scope.item = item;
+  $scope.positionOptions = ['Top', 'Bottom', 'Left'];
+
+
+  $scope.ok = function (isValid) {
+    $scope.submitted = true;
+    if (isValid) {
+
+      $scope.item.updated_at = new Date().getTime();
+
+      $scope.item.$update();
+      $modalInstance.close($scope.item);
+
+    } else {
+      $scope.submitted = true;
+    }
   };
 
   $scope.cancel = function () {
+    $scope.submitted = false;
     $modalInstance.dismiss('cancel');
   };
-});
+}]);

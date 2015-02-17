@@ -11,32 +11,32 @@ var mongoose = require('mongoose'),
  * Banner Schema
  */
 var BannerSchema = new Schema({
-  banner_name: {
+  name: {
     type: String,
     required: true,
     trim: true
   },
-  banner_position: {
+  position: {
     type: String,
     required: true,
     trim: true
   },
-  banner_url: {
+  url: {
     type: String,
     required: true,
     trim: true
   },
-  banner_image: {
+  image: {
     type: String,
     trim: true,
     required: true,
     default: 'img.jpg'
   },
-  banner_active: {
+  active: {
     type: Boolean,
     default:false
   },
-  banner_expires: {
+  expires: {
     type: Date,
     default: Date.now
   },
@@ -62,8 +62,8 @@ var BannerSchema = new Schema({
 /**
  * Validations
  */
-BannerSchema.path('banner_name').validate(function(banner_name) {
-  return !!banner_name;
+BannerSchema.path('name').validate(function(name) {
+  return !!name;
 }, 'Banner name cannot be blank');
 
 

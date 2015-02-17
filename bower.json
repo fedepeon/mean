@@ -11,7 +11,6 @@
     "angular-bootstrap": "0.11.0",
     "angular-ui-router": "#master",
     "web-bootstrap": "./node_modules/meanio/resources/web-bootstrap.js",
-    "angular-pickadate": "*",
     "angular-smart-table": "~1.4.11"
   }
 }

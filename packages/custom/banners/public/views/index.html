@@ -1,4 +1,4 @@
-<div class="" data-ng-controller="BannersController" ng-init="all()">
+<div class="" data-ng-controller="BannersCtrl" ng-init="all()">
 
   <ul class="nav nav-tabs bottom-10">
     <li role="presentation" ng-click="all()" class="{{activeTab.all}}"><a>All Banners</a></li>
@@ -18,31 +18,34 @@
   <table class="table table-striped">
     <thead>
     <tr>
-      <th>banner name</th>
-      <th>banner position</th>
-      <th>banner_expires</th>
-      <th>banner_image</th>
+      <th>Title</th>
+      <th>Position</th>
+      <th>Active</th>
+      <th>Expires</th>
+      <th>Image</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="row in rowCollection">
-      <td>{{row.banner_name}}</td>
-      <td>{{row.banner_position}}</td>
-      <td>{{row.banner_expires | date}}</td>
-      <td><img data-ng-src="/banners/assets/img/{{row.banner_image}}" alt="{{row.banner_name}}" style="width:100%"></td>
+      <td>{{row.name}}</td>
+      <td>{{row.position}}</td>
+      <td><i class="glyphicon glyphicon-ok green" ng-show="row.active"></i></td>
+      <td>{{row.expires | date}}</td>
+      <td><img data-ng-src="/banners/assets/img/{{row.image}}" alt="{{row.name}}" style="width:100%"></td>
       <td>
 
+      <button type="button" ng-click="editItem(row)" class="btn btn-sm btn-success" ng-hide="row.deleted_at">
+        <i class="glyphicon glyphicon-edit"></i>
+      </button>
+
       <button type="button" ng-click="deleteItem(row)" class="btn btn-sm btn-warning" ng-hide="row.deleted_at">
-        <i class="glyphicon glyphicon-trash">
-        </i>
+        <i class="glyphicon glyphicon-trash"></i>
       </button>
       <button type="button" ng-click="restoreItem(row)" class="btn btn-sm btn-success" ng-show="row.deleted_at">
-        <i class="glyphicon glyphicon-arrow-left">
-        </i>
+        <i class="glyphicon glyphicon-arrow-left"></i>
       </button>
       <button type="button" ng-click="removeItem(row)" class="btn btn-sm btn-danger" ng-show="row.deleted_at">
-        <i class="glyphicon glyphicon-trash">
-        </i>
+        <i class="glyphicon glyphicon-trash"></i>
       </button>
 
 
@@ -51,37 +54,82 @@
     </tr>
     </tbody>
   </table>
-  <div ng-controller="ModalDemoCtrl">
-      <script type="text/ng-template" id="myModalContent.html">
-          <div class="modal-header">
-              <h3 class="modal-title">Im a modal!</h3>
+
+    <script type="text/ng-template" id="edit.html">
+    <form name="bannerForm" class="form-horizontal" role="form" data-ng-submit="update(bannerForm.$valid)" novalidate>
+        <div class="modal-header">
+            <h3 class="modal-title">Edit banner</h3>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group" ng-class="{ 'has-error' : submitted && bannerForm.name.$invalid }">
+            <label mean-token="'edit-name'" for="name" class="col-md-3 control-label">Banner name</label>
+            <div class="col-md-9">
+              <input name="name" type="text" class="form-control" data-ng-model="item.name" id="name" placeholder="Banner name" required>
+              <div ng-show="submitted && bannerForm.name.$invalid" class="help-block">
+                <p ng-show="bannerForm.name.$error.required">Banner name is required</p>
+              </div>
+            </div>
           </div>
-          <div class="modal-body">
-              <ul>
-                  <li ng-repeat="item in items">
-                      <a ng-click="selected.item = item">{{ item }}</a>
-                  </li>
-              </ul>
-              Selected: <b>{{ selected.item }}</b>
+          <div class="form-group" ng-class="{ 'has-error' : submitted && bannerForm.position.$invalid }">
+            <label mean-token="'edit-position'" for="position" class="col-md-3 control-label">Banner position</label>
+            <div class="col-md-9">
+
+              <select ng-model="item.position"
+                     ng-options="o for o in positionOptions"
+                     class="form-control"
+                     name="position"
+                     id="position">
+              </select>
+
+
+              <div ng-show="submitted && bannerForm.position.$invalid" class="help-block">
+                <p ng-show="bannerForm.position.$error.required">Banner position is required</p>
+              </div>
+            </div>
           </div>
-          <div class="modal-footer">
-              <button class="btn btn-primary" ng-click="ok()">OK</button>
-              <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+          <div class="form-group" ng-class="{ 'has-error' : submitted && bannerForm.url.$invalid }">
+            <label mean-token="'edit-url'" for="url" class="col-md-3 control-label">Banner url</label>
+            <div class="col-md-9">
+              <input name="url" type="text" class="form-control" data-ng-model="item.url" id="url" placeholder="Banner url" required>
+              <div ng-show="submitted && bannerForm.url.$invalid" class="help-block">
+                <p ng-show="bannerForm.url.$error.required">Banner url is required</p>
+              </div>
+            </div>
           </div>
-      </script>
+          <div class="form-group" ng-class="{ 'has-error' : submitted && bannerForm.active.$invalid }">
+            <label mean-token="'edit-active'" for="active" class="col-md-3 control-label">Banner active</label>
+            <div class="col-md-9">
+              <div class="checkbox">
+                 <label>
+                   <input name="active" type="checkbox" data-ng-model="item.active" id="active"> {{item.active}}
+                 </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{ 'has-error' : submitted && bannerForm.expires.$invalid }">
+            <label mean-token="'edit-expires'" for="expires" class="col-md-3 control-label">Banner expires</label>
+            <div class="col-md-9">
 
-      <button class="btn btn-default" ng-click="open()">Open me!</button>
-      <button class="btn btn-default" ng-click="open('lg')">Large modal</button>
-      <button class="btn btn-default" ng-click="open('sm')">Small modal</button>
-      <div ng-show="selected">Selection from a modal: {{ selected }}</div>
-  </div>
 
-  <hr>
-  <div ng-show='showModal' class="ng-modal-dialog">
-    <p>Modal Content Goes here<p>
-  </div>
+              <div style="display:inline-block; min-height:290px;">
+                  <datepicker ng-model="item.expires" min-date="minDate" show-weeks="true" class="well well-sm"></datepicker>
+              </div>
 
-  <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
-  <button class='btn btn-default' ng-click="addAlert()">Add Alert</button>
+              <div ng-show="submitted && bannerForm.expires.$invalid" class="help-block">
+                <p ng-show="bannerForm.expires.$error.required">Banner expires is required</p>
+              </div>
+            </div>
+          </div>
 
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok(bannerForm.$valid)">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+        </form>
+
+    </script>
+
+    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
 </div>
