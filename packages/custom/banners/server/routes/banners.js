@@ -15,11 +15,21 @@ var hasAuthorization = function(req, res, next) {
 module.exports = function(Banners, app, auth) {
 
   //Define multer behavior
+
+
   app.use(multer({
     dest: './packages/custom/banners/public/assets/img',
-    rename: function (fieldname, filename) {
-      return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
-    }}));
+   rename: function (fieldname, filename) {
+     return filename.replace(/\W+/g, '-').toLowerCase() + Date.now();
+    },
+  onFileUploadStart: function (file) {
+    console.log(file.originalname + ' is starting ...');
+  },
+  onFileUploadComplete: function (file) {
+    console.log(file.fieldname + ' uploaded to  ' + file.path);
+  }
+  }));
+
 
   // Routes
   app.route('/banners/upload')

@@ -29,7 +29,7 @@
   margin-right: 10px;
 }
 
-i.filebutton {
+.uploadIcon {
     width:18px;
     height:18px;
     overflow:hidden;
@@ -37,7 +37,7 @@ i.filebutton {
     background-color: transparent;
 }
 
-i input {
+.uploadInput {
     z-index: 999;
     line-height: 0;
     font-size: 50px;

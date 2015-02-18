@@ -28,13 +28,13 @@
     <tbody>
     <tr ng-repeat="row in rowCollection">
       <td>{{row.name}}</td>
-      <td>{{row.position}}</td>
-      <td><i class="glyphicon glyphicon-ok success" ng-show="row.active"></i></td>
-      <td>{{row.expires | date}}</td>
-      <td width="20%"><img data-ng-src="/banners/assets/img/{{row.image}}" alt="{{row.name}}" style="width:100%"></td>
-      <td>
-      <i class="filebutton glyphicon glyphicon-upload icon success" ng-hide="row.deleted_at">
-        <input type="file" ng-file-select="onFileSelect(row, $files)">
+      <td width="10%">{{row.position}}</td>
+      <td width="10%"><i class="glyphicon glyphicon-ok success" ng-show="row.active"></i></td>
+      <td width="10%">{{row.expires | date}}</td>
+      <td width="10%"><img data-ng-src="/banners/assets/img/{{row.image}}" alt="{{row.name}}" style="width:100%"></td>
+      <td width="10%">
+      <i class="uploadIcon glyphicon glyphicon-upload icon success" ng-hide="row.deleted_at">
+        <input class="uploadInput" type="file" ng-file-select="onFileSelect(row, $files)">
       </i>
       <i class="glyphicon glyphicon-edit icon success" ng-click="editItem(row)" ng-hide="row.deleted_at"></i>
       <i class="glyphicon glyphicon-trash icon warning" ng-click="deleteItem(row)" ng-hide="row.deleted_at"></i>

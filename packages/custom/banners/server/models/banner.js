@@ -30,7 +30,7 @@ var BannerSchema = new Schema({
     type: String,
     trim: true,
     required: true,
-    default: 'img.jpg'
+    default: 'img.png'
   },
   active: {
     type: Boolean,

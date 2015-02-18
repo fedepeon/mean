@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
   Banner = mongoose.model('Banner'),
+  fs = require('fs'),
   _ = require('lodash');
 
 /**
@@ -66,6 +67,23 @@ exports.update = function(req, res) {
  */
 exports.destroy = function(req, res) {
   var banner = req.banner;
+  var image = './packages/custom/banners/public/assets/img/'+banner.image;
+
+  if (banner.image !== 'img.png') {
+
+    fs.exists(image, function (exists) {
+        if (exists) {
+          fs.unlink(image, function (err) {
+            if (err) {
+              return res.status(500).json({
+                error: 'Cannot delete:'+image
+              });
+            }
+            console.log('successfully deleted:'+image);
+          });
+        }
+    });
+  }
 
   banner.remove(function(err) {
     if (err) {
@@ -74,8 +92,8 @@ exports.destroy = function(req, res) {
       });
     }
     res.json(banner);
-
   });
+
 };
 
 /**

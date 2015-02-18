@@ -53,7 +53,7 @@ function($scope, $upload, $modal, $log, Global, Banners) {
       name: 'WX',
       position: 'Top',
       url: 'http://',
-      image: 'img.jpg',
+      image: 'img.png',
       active: true,
       expires: expires,
       deleted_at: null
@@ -83,6 +83,7 @@ function($scope, $upload, $modal, $log, Global, Banners) {
   $scope.removeItem = function removeItem(row) {
     var index = $scope.rowCollection.indexOf(row);
     if (index !== -1) {
+
       row.$remove();
       $scope.rowCollection.splice(index, 1);
       //$scope.displayedCollection = [].concat($scope.rowCollection);
@@ -99,26 +100,6 @@ function($scope, $upload, $modal, $log, Global, Banners) {
       //$scope.displayedCollection = [].concat($scope.rowCollection);
     }
   };
-
-
-  function formatDate(date) {
-    var month = date.getMonth();
-    var day = date.getDate();
-    month = month + 1;
-    month = month + '';
-    if (month.length === 1)
-    {
-      month = '0' + month;
-    }
-    day = day + 1;
-    day = day + '';
-    if (day.length === 1)
-    {
-      day = '0' + day;
-    }
-    return date.getFullYear()  + '-' + month + '-' + day;
-  }
-
 
   $scope.editItem = function (item) {
 
