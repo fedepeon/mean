@@ -1,21 +1,8 @@
 'use strict';
 
 /* jshint -W098 */
-angular.module('mean.banners').controller('BannersCtrl', ['$scope', '$modal', '$log', 'Global', 'Banners',
-function($scope, $modal, $log, Global, Banners) {
-
-  $scope.alerts = [
-  { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
-  { type: 'success', msg: 'Well done! You successfully read this important alert message.' }
-  ];
-
-  $scope.addAlert = function() {
-    $scope.alerts.push({msg: 'Another alert!'});
-  };
-
-  $scope.closeAlert = function(index) {
-    $scope.alerts.splice(index, 1);
-  };
+angular.module('mean.banners').controller('BannersCtrl', ['$scope', '$upload', '$modal', '$log', 'Global', 'Banners',
+function($scope, $upload, $modal, $log, Global, Banners) {
 
   $scope.global = Global;
   $scope.package = {
@@ -148,12 +135,45 @@ function($scope, $modal, $log, Global, Banners) {
       }
     });
 
+
     modalInstance.result.then(function (item) {
-      console.log(item);
+      $log.info(item);
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
     });
 
+  };
+
+  $scope.images = [];
+
+  $scope.onFileSelect = function(item, $files) {
+
+      $scope.files = $files;
+      //$files: an array of files selected, each file has name, size, and type.
+          var file = $files[0];
+          $scope.upload = $upload.upload({
+              url: 'banners/upload',
+              headers: {
+                  'Content-Type': 'multipart/form-data'
+              },
+              file: file
+          }).progress(function(evt) {
+              $log.info('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+          }).success(function(data, status, headers, config) {
+              if (data.success) {
+                $scope.images = [];
+                $scope.images.push(data.file);
+
+                if (item) {
+
+                  item.image = data.file.name;
+                  $log.info(item);
+                  item.$update();
+
+                }
+
+              }
+          });
   };
 
 
@@ -163,34 +183,8 @@ function($scope, $modal, $log, Global, Banners) {
 
 angular.module('mean.banners').controller('EditModalCtrl', ['$scope',  '$modalInstance', 'item', function ($scope,  $modalInstance, item) {
 
-    $scope.item = item;
-
-    $scope.dt = new Date();
-    console.log($scope.item);
-
-    // Disable weekend selection
-    $scope.disabled = function(date, mode) {
-      return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-    };
-
-
-    $scope.open = function($event) {
-      $event.preventDefault();
-      $event.stopPropagation();
-
-      $scope.opened = true;
-    };
-
-    $scope.dateOptions = {
-      formatYear: 'yy',
-      startingDay: 1
-    };
-
-    $scope.format = 'yyyy/MM/dd';
-
-/*---------------------------------------*/
-  $scope.submitted = false;
   $scope.item = item;
+  $scope.submitted = false;
   $scope.positionOptions = ['Top', 'Bottom', 'Left'];
 
 

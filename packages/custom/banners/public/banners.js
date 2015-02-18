@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('mean.banners', ['ui.bootstrap']);
+angular.module('mean.banners', ['ui.bootstrap', 'angularFileUpload']);

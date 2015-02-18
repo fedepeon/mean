@@ -1,4 +1,54 @@
-.green {
+.success {
   color: #5cb85c;
-  border-color: #4cae4c;
+}
+.success:hover {
+  color: #4cae4c;
+}
+.warning {
+  color: #ed9c28;
+}
+.warning:hover {
+  color: #d58512;
+}
+.danger {
+  color: #d9534f !important;
+}
+.danger:hover {
+  color: #d43f3a !important;;
+}
+
+.info {
+  color: #428bca !important;
+}
+.info:hover {
+  color: #2868A0 !important;;
+}
+
+.icon {
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+i.filebutton {
+    width:18px;
+    height:18px;
+    overflow:hidden;
+    position:relative;
+    background-color: transparent;
+}
+
+i input {
+    z-index: 999;
+    line-height: 0;
+    font-size: 50px;
+    position: absolute;
+    top: -2px;
+    left: -700px;
+    opacity: 0;
+    filter: alpha(opacity = 0);
+    -ms-filter: "alpha(opacity=0)";
+    cursor: pointer;
+    _cursor: hand;
+    margin: 0;
+    padding:0;
 }

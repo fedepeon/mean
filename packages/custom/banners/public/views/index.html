@@ -3,7 +3,7 @@
   <ul class="nav nav-tabs bottom-10">
     <li role="presentation" ng-click="all()" class="{{activeTab.all}}"><a>All Banners</a></li>
     <li role="presentation"  ng-click="recycleBin()"  class="{{activeTab.recycleBin}}">
-      <a><i class="glyphicon glyphicon-trash"></i> Recycle Bin</a>
+      <a class="warning"><i class="glyphicon glyphicon-trash"></i> Recycle Bin</a>
     </li>
     <li class="pull-right">
       <button type="button" ng-click="addItem()" class="btn btn-sm btn-success">
@@ -29,28 +29,18 @@
     <tr ng-repeat="row in rowCollection">
       <td>{{row.name}}</td>
       <td>{{row.position}}</td>
-      <td><i class="glyphicon glyphicon-ok green" ng-show="row.active"></i></td>
+      <td><i class="glyphicon glyphicon-ok success" ng-show="row.active"></i></td>
       <td>{{row.expires | date}}</td>
-      <td><img data-ng-src="/banners/assets/img/{{row.image}}" alt="{{row.name}}" style="width:100%"></td>
+      <td width="20%"><img data-ng-src="/banners/assets/img/{{row.image}}" alt="{{row.name}}" style="width:100%"></td>
       <td>
+      <i class="filebutton glyphicon glyphicon-upload icon success" ng-hide="row.deleted_at">
+        <input type="file" ng-file-select="onFileSelect(row, $files)">
+      </i>
+      <i class="glyphicon glyphicon-edit icon success" ng-click="editItem(row)" ng-hide="row.deleted_at"></i>
+      <i class="glyphicon glyphicon-trash icon warning" ng-click="deleteItem(row)" ng-hide="row.deleted_at"></i>
+      <i class="glyphicon glyphicon-arrow-left icon info" ng-click="restoreItem(row)" ng-show="row.deleted_at"></i>
+      <i class="glyphicon glyphicon-trash icon danger" ng-click="removeItem(row)" ng-show="row.deleted_at"></i>
 
-      <button type="button" ng-click="editItem(row)" class="btn btn-sm btn-success" ng-hide="row.deleted_at">
-        <i class="glyphicon glyphicon-edit"></i>
-      </button>
-
-      <button type="button" ng-click="deleteItem(row)" class="btn btn-sm btn-warning" ng-hide="row.deleted_at">
-        <i class="glyphicon glyphicon-trash"></i>
-      </button>
-      <button type="button" ng-click="restoreItem(row)" class="btn btn-sm btn-success" ng-show="row.deleted_at">
-        <i class="glyphicon glyphicon-arrow-left"></i>
-      </button>
-      <button type="button" ng-click="removeItem(row)" class="btn btn-sm btn-danger" ng-show="row.deleted_at">
-        <i class="glyphicon glyphicon-trash"></i>
-      </button>
-
-
-
-      </td>
     </tr>
     </tbody>
   </table>
@@ -110,18 +100,14 @@
           <div class="form-group" ng-class="{ 'has-error' : submitted && bannerForm.expires.$invalid }">
             <label mean-token="'edit-expires'" for="expires" class="col-md-3 control-label">Banner expires</label>
             <div class="col-md-9">
-
-
               <div style="display:inline-block; min-height:290px;">
                   <datepicker ng-model="item.expires" min-date="minDate" show-weeks="true" class="well well-sm"></datepicker>
               </div>
-
               <div ng-show="submitted && bannerForm.expires.$invalid" class="help-block">
                 <p ng-show="bannerForm.expires.$error.required">Banner expires is required</p>
               </div>
             </div>
           </div>
-
         </div>
         <div class="modal-footer">
             <button class="btn btn-primary" ng-click="ok(bannerForm.$valid)">OK</button>
@@ -131,5 +117,23 @@
 
     </script>
 
-    <div ng-show="selected">Selection from a modal: {{ selected }}</div>
+
+
+    <script type="text/ng-template" id="upload.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Upload an image</h3>
+        </div>
+        <div class="modal-body">
+            <input type="file" ng-file-select="onFileSelect(item, $files)" data-ng-model="item.image" class="form-control">
+        </div>
+        <img data-ng-src="/banners/assets/img/{{item.image}}" alt="" class="top-10">
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok(bannerForm.$valid)">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+
+    </script>
+
 </div>
