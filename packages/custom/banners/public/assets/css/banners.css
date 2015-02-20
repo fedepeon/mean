@@ -52,3 +52,16 @@
     margin: 0;
     padding:0;
 }
+
+.st-sort-ascent:before{
+    content: '\25B2';
+}
+
+.st-sort-descent:before{
+    content: '\25BC';
+}
+
+.st-selected{
+    background: #216eff !important;
+    color: white !important;
+}

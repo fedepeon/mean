@@ -25,7 +25,7 @@ function($scope, $upload, $modal, $log, Global, Banners) {
 
     Banners.query({query: 'not_deleted'}, function(banners) {
       $scope.rowCollection = banners;
-      //$scope.displayedCollection = [].concat($scope.rowCollection);
+      $scope.displayedCollection = [].concat($scope.rowCollection);
       $scope.activateTab('all');
     });
   };
@@ -34,7 +34,7 @@ function($scope, $upload, $modal, $log, Global, Banners) {
 
     Banners.query({query: 'deleted'}, function(banners) {
       $scope.rowCollection = banners;
-      //$scope.displayedCollection = [].concat($scope.rowCollection);
+      $scope.displayedCollection = [].concat($scope.rowCollection);
       $scope.activateTab('recycleBin');
 
     });
@@ -62,7 +62,7 @@ function($scope, $upload, $modal, $log, Global, Banners) {
     newBanner.$save();
 
     $scope.rowCollection.unshift(newBanner);
-    //$scope.displayedCollection = [].concat($scope.rowCollection);
+    $scope.displayedCollection = [].concat($scope.rowCollection);
 
   };
 
@@ -75,7 +75,7 @@ function($scope, $upload, $modal, $log, Global, Banners) {
       row.deleted_at = new Date();
       row.$update();
       $scope.rowCollection.splice(index, 1);
-      //$scope.displayedCollection = [].concat($scope.rowCollection);
+      $scope.displayedCollection = [].concat($scope.rowCollection);
     }
   };
 
@@ -86,7 +86,7 @@ function($scope, $upload, $modal, $log, Global, Banners) {
 
       row.$remove();
       $scope.rowCollection.splice(index, 1);
-      //$scope.displayedCollection = [].concat($scope.rowCollection);
+      $scope.displayedCollection = [].concat($scope.rowCollection);
     }
   };
 
@@ -97,7 +97,7 @@ function($scope, $upload, $modal, $log, Global, Banners) {
       row.deleted_at = null;
       row.$update();
       $scope.rowCollection.splice(index, 1);
-      //$scope.displayedCollection = [].concat($scope.rowCollection);
+      $scope.displayedCollection = [].concat($scope.rowCollection);
     }
   };
 

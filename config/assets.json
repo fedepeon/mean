@@ -14,6 +14,7 @@
         "bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
         "bower_components/danialfarid-angular-file-upload/dist/angular-file-upload-shim.min.js",
         "bower_components/danialfarid-angular-file-upload/dist/angular-file-upload.min.js",
+        "bower_components/angular-smart-table/dist/smart-table.debug.js",
         "bower_components/web-bootstrap/index.js"
       ]
     }

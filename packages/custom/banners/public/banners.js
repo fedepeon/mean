@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('mean.banners', ['ui.bootstrap', 'angularFileUpload']);
+angular.module('mean.banners', ['ui.bootstrap', 'angularFileUpload', 'smart-table']);
